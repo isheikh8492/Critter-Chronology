@@ -10,8 +10,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Handles web requests related to Pets.
@@ -47,6 +49,12 @@ public class PetController {
     @GetMapping("/{petId}")
     public PetDTO getPet(@PathVariable long petId) {
         return convertPetToPetDTO(petService.getPetById(petId));
+    }
+
+    @PutMapping("/{petId}")
+    public PetDTO setPetToOwner(@RequestBody PetDTO petDTO, @PathVariable long petId) {
+        return convertPetToPetDTO(petService
+                .updateOwnerId(petId, convertPetDTOToPet(petDTO).getOwner().getId()));
     }
 
     @GetMapping
